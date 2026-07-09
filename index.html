@@ -6,176 +6,287 @@
     <title>Direct Result Portal</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 </head>
+
 <body class="bg-slate-100 flex flex-col items-center justify-center min-h-screen p-4 space-y-4">
 
-    <div class="bg-white p-8 rounded-2xl shadow-xl w-full max-w-xl border border-slate-200 space-y-6">
-        
-        <div class="flex items-center justify-between border-b border-slate-100 pb-3">
-            <div>
-                <h2 class="text-2xl font-bold text-slate-800">Direct Result Portal</h2>
-                <p class="text-xs text-slate-400">Bina kisi delay ke instant marksheet dekhein</p>
-            </div>
-            <div class="flex items-center space-x-2 bg-emerald-50 px-3 py-1.5 rounded-full border border-emerald-200">
-                <span class="w-2.5 h-2.5 bg-emerald-500 rounded-full animate-ping"></span>
-                <span class="w-2.5 h-2.5 bg-emerald-500 rounded-full absolute"></span>
-                <span id="active-count" class="text-xs font-bold text-emerald-700 font-mono">Active Users: 0</span>
-            </div>
-        </div>
-        
-        <div class="space-y-4">
-            <div>
-                <label class="block text-xs font-bold uppercase text-slate-500 mb-1">Username / PRN</label>
-                <input type="text" id="my-username" class="w-full px-4 py-2.5 border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500" placeholder="Enter PRN">
-            </div>
-            <div>
-                <label class="block text-xs font-bold uppercase text-slate-500 mb-1">Password</label>
-                <input type="password" id="my-password" class="w-full px-4 py-2.5 border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500" placeholder="••••••••">
-            </div>
-            
-            <button id="action-btn" onclick="startFetching()" class="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl shadow-md cursor-pointer transition-all">
-                Get Result Instantly
-            </button>
+<div class="bg-white p-8 rounded-2xl shadow-xl w-full max-w-xl border border-slate-200 space-y-6">
 
-            <div id="motivation-box" class="hidden text-center py-6 px-4 bg-amber-50 border border-amber-200 rounded-2xl animate-pulse">
-                <h1 class="text-2xl md:text-3xl font-black text-amber-700 tracking-wide drop-shadow-sm">
-                    ⏳ Wait kijiye janab,<br>Khushkhabar aa rahi he...
-                </h1>
-                <p class="text-xs text-amber-500 font-medium mt-2">Hamara robot aapka result secure fetch kar raha hai.</p>
-            </div>
+<div class="flex items-center justify-between border-b border-slate-100 pb-3">
+<div>
+<h2 class="text-2xl font-bold text-slate-800">Direct Result Portal</h2>
+<p class="text-xs text-slate-400">
+Bina kisi delay ke instant marksheet dekhein
+</p>
+</div>
 
-            <div id="error-box" class="text-red-600 text-xs font-medium px-1 hidden text-center bg-red-50 p-3 rounded-xl border border-red-100"></div>
-        </div>
+<div class="flex items-center space-x-2 bg-emerald-50 px-3 py-1.5 rounded-full border border-emerald-200">
+<span class="w-2.5 h-2.5 bg-emerald-500 rounded-full animate-ping"></span>
+<span id="active-count"
+class="text-xs font-bold text-emerald-700">
+Active Users: 0
+</span>
+</div>
+</div>
 
-        <div id="result-box" class="hidden border-t border-slate-200 pt-4 space-y-3">
-            <div class="flex items-center justify-between">
-                <h3 class="text-md font-bold text-emerald-600">🎉 Your Marksheet Data:</h3>
-                
-                <button onclick="downloadResult()" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold px-3 py-1.5 rounded-lg shadow pointer transition-all">
-                    📥 Download (TXT)
-                </button>
-            </div>
-            <div id="final-marksheet" class="bg-slate-50 border border-slate-200 p-4 rounded-xl font-mono text-xs overflow-auto max-h-80 whitespace-pre text-slate-700"></div>
-        </div>
+<div class="space-y-4">
 
-    </div>
+<div>
+<label class="block text-xs font-bold uppercase text-slate-500 mb-1">
+Username / PRN
+</label>
 
-    <audio id="viral-sound" src="https://www.myinstants.com/media/sounds/faaaa.mp3"></audio>
+<input
+type="text"
+id="my-username"
+class="w-full px-4 py-2.5 border border-slate-300 rounded-xl"
+placeholder="Enter PRN">
+</div>
 
-    <script>
-        let currentResultText = ""; 
+<div>
+<label class="block text-xs font-bold uppercase text-slate-500 mb-1">
+Password
+</label>
 
-        async function updateLiveUsersCount() {
-            try {
-                const res = await fetch('http://localhost:5000/api/active-users');
-                const data = await res.json();
-                document.getElementById('active-count').innerText = "Active Users: " + data.count;
-            } catch(e) { console.log("Counter offline"); }
+<input
+type="password"
+id="my-password"
+class="w-full px-4 py-2.5 border border-slate-300 rounded-xl"
+placeholder="••••••••">
+</div>
+
+<button
+id="action-btn"
+onclick="startFetching()"
+class="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl">
+Get Result Instantly
+</button>
+
+<div
+id="motivation-box"
+class="hidden text-center py-6 px-4 bg-amber-50 border border-amber-200 rounded-2xl">
+
+<h1 class="text-2xl font-black text-amber-700">
+⏳ Wait kijiye janab,<br>
+Khushkhabar aa rahi he...
+</h1>
+
+<p class="text-xs text-amber-500 mt-2">
+Hamara robot aapka result secure fetch kar raha hai.
+</p>
+
+</div>
+
+<div
+id="error-box"
+class="hidden text-red-600 text-xs font-medium text-center bg-red-50 p-3 rounded-xl">
+</div>
+
+</div>
+
+<div
+id="result-box"
+class="hidden border-t border-slate-200 pt-4 space-y-3">
+
+<div class="flex items-center justify-between">
+
+<h3 class="text-md font-bold text-emerald-600">
+🎉 Your Marksheet Data
+</h3>
+
+<button
+onclick="downloadResult()"
+class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold px-3 py-1.5 rounded-lg">
+
+📥 Download (TXT)
+
+</button>
+
+</div>
+
+<div
+id="final-marksheet"
+class="bg-slate-50 border border-slate-200 p-4 rounded-xl font-mono text-xs overflow-auto max-h-80 whitespace-pre text-slate-700">
+</div>
+
+</div>
+
+</div>
+
+<audio
+id="viral-sound"
+src="https://www.myinstants.com/media/sounds/faaaa.mp3">
+</audio>
+
+<script>
+let currentResultText = "";
+
+const API = "https://my-result-app-production.up.railway.app";
+
+async function updateLiveUsersCount() {
+    try {
+        const res = await fetch(`${API}/api/active-users`);
+        const data = await res.json();
+        document.getElementById("active-count").innerText =
+            "Active Users: " + data.count;
+    } catch (e) {
+        console.log(e);
+    }
+}
+
+window.addEventListener("load", async () => {
+    try {
+        await fetch(`${API}/api/user-connected`, {
+            method: "POST"
+        });
+    } catch (e) {}
+
+    updateLiveUsersCount();
+    setInterval(updateLiveUsersCount, 3000);
+});
+
+window.addEventListener("beforeunload", () => {
+    navigator.sendBeacon(`${API}/api/user-disconnected`);
+});
+
+function downloadResult() {
+    if (!currentResultText) return;
+
+    const prn =
+        document.getElementById("my-username").value || "student";
+
+    const blob = new Blob([currentResultText], {
+        type: "text/plain"
+    });
+
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = `Result_${prn}.txt`;
+    a.click();
+}
+
+function playErrorCombo() {
+    const audio = document.getElementById("viral-sound");
+
+    audio.currentTime = 0;
+
+    audio.play().catch(() => {});
+
+    audio.onended = () => {
+        if ("speechSynthesis" in window) {
+            speechSynthesis.cancel();
+
+            const msg =
+                new SpeechSynthesisUtterance(
+                    "Kya server he re tera R C P I T ka!"
+                );
+
+            msg.lang = "hi-IN";
+            msg.rate = 0.9;
+
+            speechSynthesis.speak(msg);
         }
+    };
+}
 
-        window.addEventListener('load', async () => {
-            try {
-                await fetch('http://localhost:5000/api/user-connected', { method: 'POST' });
-                updateLiveUsersCount();
-            } catch(e){}
-            setInterval(updateLiveUsersCount, 3000);
+async function startFetching() {
+
+    const username =
+        document.getElementById("my-username").value;
+
+    const password =
+        document.getElementById("my-password").value;
+
+    const btn =
+        document.getElementById("action-btn");
+
+    const errorBox =
+        document.getElementById("error-box");
+
+    const resultBox =
+        document.getElementById("result-box");
+
+    const motivation =
+        document.getElementById("motivation-box");
+
+    const marksheet =
+        document.getElementById("final-marksheet");
+
+    errorBox.classList.add("hidden");
+    resultBox.classList.add("hidden");
+
+    if (!username || !password) {
+
+        errorBox.innerText =
+            "⚠️ PRN आणि Password टाका.";
+
+        errorBox.classList.remove("hidden");
+
+        playErrorCombo();
+
+        return;
+    }
+
+    btn.disabled = true;
+    btn.innerText = "Loading...";
+
+    motivation.classList.remove("hidden");
+
+    try {
+
+        const res = await fetch(`${API}/api/get-result`, {
+
+            method: "POST",
+
+            headers: {
+                "Content-Type": "application/json"
+            },
+
+            body: JSON.stringify({
+                username,
+                password
+            })
+
         });
 
-        window.addEventListener('beforeunload', () => {
-            navigator.sendBeacon('http://localhost:5000/api/user-disconnected');
-        });
+        const data = await res.json();
 
-        function downloadResult() {
-            if(!currentResultText) return;
-            const prn = document.getElementById('my-username').value || "student";
-            const blob = new Blob([currentResultText], { type: 'text/plain' });
-            const link = document.createElement('a');
-            link.href = URL.createObjectURL(blob);
-            link.download = `Result_${prn}.txt`;
-            link.click();
-        }
+        motivation.classList.add("hidden");
 
-        // 🔥 PERFECT COMBO SYSTEM (Original Meme Sound + RCPIT Custom Statement)
-        function playErrorCombo() {
-            const audio = document.getElementById('viral-sound');
-            
-            if (audio) {
-                audio.currentTime = 0;
-                // 1. Pehle Original Online "Faaaaa" track play hoga
-                audio.play().then(() => {
-                    // 2. Jaise hi sound khatam ho, AI voice active hogi
-                    audio.onended = () => {
-                        if ('speechSynthesis' in window) {
-                            window.speechSynthesis.cancel();
-                            const utterance = new SpeechSynthesisUtterance("Kya server he re tera R C P I T ka!");
-                            utterance.lang = 'hi-IN'; // Pure Desi Accent
-                            utterance.rate = 0.9;     // Thodi heavy aur gusse wali raw delivery speed
-                            utterance.pitch = 1.0;
-                            window.speechSynthesis.speak(utterance);
-                        }
-                    };
-                }).catch(e => {
-                    // Safety switch agar browser direct track lock kare
-                    if ('speechSynthesis' in window) {
-                        window.speechSynthesis.speak(new SpeechSynthesisUtterance("Kya server he re tera R C P I T ka!"));
-                    }
-                });
-            }
-        }
+        btn.disabled = false;
+        btn.innerText = "Get Result Instantly";
 
-        async function startFetching() {
-            const u = document.getElementById('my-username').value;
-            const p = document.getElementById('my-password').value;
-            const btn = document.getElementById('action-btn');
-            const motivationBox = document.getElementById('motivation-box');
-            const errBox = document.getElementById('error-box');
-            const resultBox = document.getElementById('result-box');
-            const marksheetDiv = document.getElementById('final-marksheet');
+        if (!data.success)
+            throw new Error(data.error);
 
-            if(!u || !p) { 
-                errBox.innerText = "⚠️ Kripya Dono fields (PRN aur Password) bharein!"; 
-                errBox.classList.remove('hidden');
-                playErrorCombo(); 
-                return; 
-            }
+        currentResultText = data.rawText;
 
-            btn.innerText = "⏳ Processing Request...";
-            btn.disabled = true;
-            
-            motivationBox.classList.remove('hidden'); 
-            errBox.classList.add('hidden');
-            resultBox.classList.add('hidden');
+        resultBox.classList.remove("hidden");
 
-            try {
-                const res = await fetch('http://localhost:5000/api/get-result', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ username: u, password: p })
-                });
-                const responseData = await res.json();
+        marksheet.innerText =
+            data.rawText;
 
-                btn.innerText = "Get Result Instantly";
-                btn.disabled = false;
-                motivationBox.classList.add('hidden'); 
+    }
 
-                if(responseData.success) {
-                    currentResultText = responseData.rawText;
-                    resultBox.classList.remove('hidden');
-                    marksheetDiv.innerText = responseData.rawText;
-                } else {
-                    throw new Error(responseData.error);
-                }
-            } catch(e) {
-                btn.innerText = "Get Result Instantly";
-                btn.disabled = false;
-                motivationBox.classList.add('hidden'); 
-                
-                errBox.innerText = e.message;
-                errBox.classList.remove('hidden');
-                
-                // Play final epic sound combo
-                playErrorCombo();
-            }
-        }
-    </script>
+    catch (err) {
+
+        motivation.classList.add("hidden");
+
+        btn.disabled = false;
+
+        btn.innerText =
+            "Get Result Instantly";
+
+        errorBox.innerText =
+            err.message;
+
+        errorBox.classList.remove("hidden");
+
+        playErrorCombo();
+
+    }
+
+}
+</script>
+
 </body>
 </html>
